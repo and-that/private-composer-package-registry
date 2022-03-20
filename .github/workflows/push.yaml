@@ -19,6 +19,13 @@ jobs:
           GIT_AUTHOR_NAME: Satis Updater
           GIT_AUTHOR_EMAIL: saits-updater@noreply.github.io
         run: |
+          # Extract Package
+          if ! [[ $COMMIT_VAR =~ \((.*?)\) ]]; then
+            exit 0;
+          fi
+          
+          PACKAGE=${BASH_REMATCH[1]}
+
           mkdir /tmp/.satis-build
           echo "{}" > /tmp/.satis-build/composer.json
 
@@ -26,12 +33,6 @@ jobs:
             --no-cache --no-progress --no-interaction -o \
             --ignore-platform-reqs
 
-          # Extract Package
-          [[ $COMMIT_VAR =~ \((.*?)\) ]]
-          PACKAGE=${BASH_REMATCH[1]}
-          if [[ -z $PACKAGE ]]; then
-            exit 0;
-          fi
 
           php $COMPOSER_HOME/vendor/bin/satis build ${SATIS_CONFIG} -n . $PACKAGE
 
