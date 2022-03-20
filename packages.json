@@ -1,0 +1,12 @@
+{
+    "packages": [],
+    "includes": {
+        "include/all$1649b26907168d25b2edfdd87062530bf604189e.json": {
+            "sha1": "1649b26907168d25b2edfdd87062530bf604189e"
+        }
+    },
+    "metadata-url": "/and-that/p2/%package%.json",
+    "available-packages": [
+        "and-that/php-library-1"
+    ]
+}
