@@ -24,10 +24,6 @@ jobs:
             exit 0;
           fi
 
-          if ! [[test -f "$SATIS_CONFIG"]]; then
-            echo "{}" > $SATIS_CONFIG;
-          fi
-          
           PACKAGE=${BASH_REMATCH[1]}
 
           mkdir /tmp/.satis-build
@@ -37,6 +33,11 @@ jobs:
             --no-cache --no-progress --no-interaction -o \
             --ignore-platform-reqs
 
+          if ! [[test -f "$SATIS_CONFIG"]]; then
+            php $COMPOSER_HOME/vendor/bin/satis init $SATIS_CONFIG \
+              --name="${{ github.repository_owner }}/${{ github.repository }}"
+              --homepage="https://github.com/${{ github.repository_owner }}"
+          fi
 
           php $COMPOSER_HOME/vendor/bin/satis build ${SATIS_CONFIG} -n . $PACKAGE
 
