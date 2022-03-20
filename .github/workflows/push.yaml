@@ -7,47 +7,34 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - name: "Checkout Repository"
+      - name: Checkout Repository
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
 
-      - name: "echo stuff"
-        env:
-          COMMIT_VAR: ${{ github.event.head_commit.message }}
-          COMPOSER_AUTH: '{"github-oauth": {"github.com": "${{ secrets.GH_TOKEN }}"}}'
-          COMPOSER_HOME: /tmp/.satis-build
-          SATIS_CONFIG: satis.json
-          GIT_AUTHOR_NAME: Satis Updater
-          GIT_AUTHOR_EMAIL: saits-updater@noreply.github.io
+      - name: Extract package from commit message
+        shell: bash
         run: |
-          # Extract Package
-          if ! [[ $COMMIT_VAR =~ \((.*?)\) ]]; then
+          if ! [[ ${{ github.event.head_commit.message }} =~ \((.*?)\) ]]; then
             exit 0;
           fi
           
-          PACKAGE=${BASH_REMATCH[1]}
-
+          PACKAGE=${BASH_REMATCH[1]} >> $GITHUB_ENV
           git checkout gh-pages
-          mkdir /tmp/.satis-build
-          echo "{}" > /tmp/.satis-build/composer.json
 
-          composer g require composer/satis:dev-main --prefer-dist \
-            --no-cache --no-progress --no-interaction -o \
-            --ignore-platform-reqs
-
-          if ! [ -f "${SATIS_CONFIG}" ]; then 
-            php $COMPOSER_HOME/vendor/bin/satis init ${SATIS_CONFIG} -n \
-              --name="${{ github.repository }}" \
-              --homepage="https://github.com/${{ github.repository_owner }}"
-          fi
-          php $COMPOSER_HOME/vendor/bin/satis add -n --name=${PACKAGE} "https://github.com/${PACKAGE}" ${SATIS_CONFIG} || true
-          php $COMPOSER_HOME/vendor/bin/satis build -n ${SATIS_CONFIG} . ${PACKAGE}
-
-          
+      - name: Private Composer Registry
+        uses: and-that/private-composer-registry-action@v1.1
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+          package_name: ${{ env.PACKAGE }}
+      
+      - name: Commit updates to GitHub Pages branch
+        env:
+          GIT_AUTHOR_NAME: Satis Updater
+          GIT_AUTHOR_EMAIL: saits-updater[bot]@users.noreply.github.com
+        run: |
           git config user.name ${GIT_AUTHOR_NAME}
           git config user.email ${GIT_AUTHOR_EMAIL}
           git add .
-          git commit -m "Updated repository"
+          git commit -m "Publish updates for ${{ env.PACKAGE}}"
           git push
-        shell: bash
