@@ -13,7 +13,7 @@ jobs:
       - name: "echo stuff"
         env:
           COMMIT_VAR: ${{ github.event.head_commit.message }}
-          COMPOSER_AUTH: '{"github-oauth": {"github.com": "${{ GH_TOKEN }}"}}'
+          COMPOSER_AUTH: '{"github-oauth": {"github.com": "${{ secrets.GH_TOKEN }}"}}'
           COMPOSER_HOME: /tmp/.satis-build
           SATIS_CONFIG: satis.json
           GIT_AUTHOR_NAME: Satis Updater
