@@ -23,6 +23,10 @@ jobs:
           if ! [[ $COMMIT_VAR =~ \((.*?)\) ]]; then
             exit 0;
           fi
+
+          if ! [[test -f "$SATIS_CONFIG"]]; then
+            echo "{}" > $SATIS_CONFIG;
+          fi
           
           PACKAGE=${BASH_REMATCH[1]}
 
