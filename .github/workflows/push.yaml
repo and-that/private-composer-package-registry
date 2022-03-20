@@ -41,6 +41,7 @@ jobs:
           php $COMPOSER_HOME/vendor/bin/satis add -n --name=${PACKAGE} "https://github.com/${PACKAGE}" ${SATIS_CONFIG} || true
           php $COMPOSER_HOME/vendor/bin/satis build -n ${SATIS_CONFIG} . ${PACKAGE}
 
+          git checkout gh-pages
           git config user.name ${GIT_AUTHOR_NAME}
           git config user.email ${GIT_AUTHOR_EMAIL}
           git add .
