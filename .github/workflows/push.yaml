@@ -33,19 +33,19 @@ jobs:
             --no-cache --no-progress --no-interaction -o \
             --ignore-platform-reqs
 
-          if ! [[test -f "$SATIS_CONFIG"]]; then
-            php $COMPOSER_HOME/vendor/bin/satis init $SATIS_CONFIG \
+          if ! [[test -f "${SATIS_CONFIG}"]]; then
+            php $COMPOSER_HOME/vendor/bin/satis init ${SATIS_CONFIG} \
               --name="${{ github.repository_owner }}/${{ github.repository }}"
               --homepage="https://github.com/${{ github.repository_owner }}"
           fi
-
-          php $COMPOSER_HOME/vendor/bin/satis build ${SATIS_CONFIG} -n . $PACKAGE
+          php $COMPOSER_HOME/vendor/bin/satis add "https://github.com/${PACKAGE}" ${SATIS_CONFIG} -n || true
+          php $COMPOSER_HOME/vendor/bin/satis build ${SATIS_CONFIG} -n . ${PACKAGE}
 
           rm -rf include/*
           cp -R build/* .
           rm -rf build/
-          git config user.name $GIT_AUTHOR_NAME
-          git config user.email $GIT_AUTHOR_EMAIL
+          git config user.name ${GIT_AUTHOR_NAME}
+          git config user.email ${GIT_AUTHOR_EMAIL}
           git add .
           git commit -m "Updated repository"
           git push
