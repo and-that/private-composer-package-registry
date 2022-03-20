@@ -33,7 +33,7 @@ jobs:
             --no-cache --no-progress --no-interaction -o \
             --ignore-platform-reqs
 
-          if ! [[test -f "${SATIS_CONFIG}"]]; then 
+          if ! [ -f "${SATIS_CONFIG}" ]; then 
             php $COMPOSER_HOME/vendor/bin/satis init ${SATIS_CONFIG} -n \
               --name="${{ github.repository_owner }}/${{ github.repository }}"
               --homepage="https://github.com/${{ github.repository_owner }}"
