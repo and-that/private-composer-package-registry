@@ -1,0 +1,30 @@
+{
+    "packages": {
+        "and-that/php-library-1": [
+            {
+                "name": "and-that/php-library-1",
+                "version": "dev-main",
+                "version_normalized": "dev-main",
+                "source": {
+                    "type": "git",
+                    "url": "git@github.com:and-that/php-library-1.git",
+                    "reference": "e114929cc7144531ee57b579b5bb0091bcb1d902"
+                },
+                "dist": {
+                    "type": "zip",
+                    "url": "https://api.github.com/repos/and-that/php-library-1/zipball/e114929cc7144531ee57b579b5bb0091bcb1d902",
+                    "reference": "e114929cc7144531ee57b579b5bb0091bcb1d902",
+                    "shasum": ""
+                },
+                "time": "2022-03-20T08:17:34+00:00",
+                "default-branch": true,
+                "type": "library",
+                "description": "Nothing to see here.",
+                "support": {
+                    "source": "https://github.com/and-that/php-library-1/tree/main",
+                    "issues": "https://github.com/and-that/php-library-1/issues"
+                }
+            }
+        ]
+    }
+}
