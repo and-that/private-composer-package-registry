@@ -1,0 +1,29 @@
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout Repository"
+        uses: actions/checkout@v2
+
+      - name: "echo stuff"
+        env:
+          COMMIT_VAR: ${{ github.event.head_commit.message }}
+          # COMPOSER_AUTH: '{"github-oauth": {"github.com": "${{ inputs.token }}"}}'
+          # COMPOSER_HOME: /tmp/.satis-build
+        run: |
+          if  [[ $COMMIT_VAR =~ \((.*?)\) ]]; then
+            echo ${BASH_REMATCH[2]}
+            # echo "flag set to true"
+          # else
+            # echo "flag=false" >> $GITHUB_ENV
+            # echo "flag set to false"
+          fi
+
+      # - name: "Use flag if true"
+      #   if: env.flag
+      #   run: echo "Flag is available and true"
