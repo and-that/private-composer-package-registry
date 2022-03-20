@@ -13,7 +13,7 @@ jobs:
       - name: "echo stuff"
         env:
           COMMIT_VAR: ${{ github.event.head_commit.message }}
-          # COMPOSER_AUTH: '{"github-oauth": {"github.com": "${{ inputs.token }}"}}'
+          COMPOSER_AUTH: '{"github-oauth": {"github.com": "${{ GH_TOKEN }}"}}'
           COMPOSER_HOME: /tmp/.satis-build
           SATIS_CONFIG: satis.json
           GIT_AUTHOR_NAME: Satis Updater
@@ -38,7 +38,7 @@ jobs:
               --name="${{ github.repository_owner }}/${{ github.repository }}" \
               --homepage="https://github.com/${{ github.repository_owner }}"
           fi
-          php $COMPOSER_HOME/vendor/bin/satis add -n "https://github.com/${PACKAGE}" ${SATIS_CONFIG} || true
+          php $COMPOSER_HOME/vendor/bin/satis add -n --name=${PACKAGE} "https://github.com/${PACKAGE}" ${SATIS_CONFIG} || true
           php $COMPOSER_HOME/vendor/bin/satis build -n ${SATIS_CONFIG} . ${PACKAGE}
 
           rm -rf include/*
