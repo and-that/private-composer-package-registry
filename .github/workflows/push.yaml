@@ -23,7 +23,7 @@ jobs:
           git checkout gh-pages
 
       - name: Private Composer Registry
-        uses: and-that/private-composer-registry-action@v1.1.1
+        uses: and-that/private-composer-registry-action@v1.1
         with:
           token: ${{ secrets.GH_TOKEN }}
           package_name: ${{ env.PACKAGE }}
